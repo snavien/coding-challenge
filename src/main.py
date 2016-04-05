@@ -55,18 +55,20 @@ def load_jsons():
     avg_degree = 0
     time_set = False
 
-    with open(os.getcwd() + '/data-gen/tweets.txt ', 'r', encoding='utf-8') as j_file:
+    os.chdir('..')
+    print(os.getcwd())
+
+    with open(os.getcwd() + "/tweet_input/tweets.txt", 'r', encoding='utf-8') as j_file:
         ht_set = set()
         init_time = 0
         ht_q = []
         for line in j_file:
+            print(line)
             json_dict = json.loads('['+line+']')
             try:
                 time = json_dict[0]['created_at'].split(' ')[3]
                 time = int(time.split(':')[0])*60 * 60 + int(time.split(':')[1])*60 + int(time.split(':')[0])
                 curr_ht = json_dict[0]['entities']['hashtags']
-
-                ht_set = set()
 
                 if init_time == 0:
                     init_time = time
@@ -80,12 +82,13 @@ def load_jsons():
                     else:
                         init_time = 0
                         time_set = False
-                        print(calculate_avg(ht_q))
-                        # print("hello")
-                        if time - init_time > 60:
+                        avg = calculate_avg(ht_q)
+                        print(avg)
+                        with open(os.getcwd() + '/tweet_output/output.txt', 'w', encoding='utf-8') as f:
+                            print(os.getcwd())
+                            print(round(avg, 2), file=f)
+                        if time - init_time > 60 or time - init_time < 0:
                             pop_htq(ht_q)
-                        # if time - init_time < 0:
-                        #     pop_old(hashtag_q, hashtag_set, curr_ht, avg_degree)
 
 
             except KeyError:
