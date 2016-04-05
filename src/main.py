@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from itertools import combinations    
 class ht:
     def __init__(self, time, text):
@@ -58,7 +59,7 @@ def load_jsons():
     os.chdir('..')
     print(os.getcwd())
 
-    with open(os.getcwd() + "/tweet_input/tweets.txt", 'r', encoding='utf-8') as j_file:
+    with open(sys.argv[1], 'r', encoding='utf-8') as j_file:
         ht_set = set()
         init_time = 0
         ht_q = []
@@ -84,12 +85,11 @@ def load_jsons():
                         time_set = False
                         avg = calculate_avg(ht_q)
                         print(avg)
-                        with open(os.getcwd() + '/tweet_output/output.txt', 'w', encoding='utf-8') as f:
+                        with open(sys.argv[2], 'w', encoding='utf-8') as f:
                             print(os.getcwd())
                             print(round(avg, 2), file=f)
                         if time - init_time > 60 or time - init_time < 0:
                             pop_htq(ht_q)
-
 
             except KeyError:
                 continue
